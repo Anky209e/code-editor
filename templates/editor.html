@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Python Editor</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #1e1e2f;
+            color: white;
+            padding: 2rem;
+        }
+
+        .editor-container {
+            border: 1px solid #555;
+            border-radius: 8px;
+            background: #282a36;
+            margin-bottom: 1rem;
+        }
+
+        .CodeMirror {
+            height: 300px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background: #50fa7b;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #191a21;
+            padding: 1rem;
+            border-radius: 6px;
+            white-space: pre-wrap;
+        }
+    </style>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/addon/hint/show-hint.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/addon/hint/anyword-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/theme/dracula.min.css">
+</head>
+
+<body>
+
+    <h2>🐍 Mini Python Code Editor</h2>
+
+    <form method="POST" action="/run" onsubmit="syncCode();">
+        <div class="editor-container">
+            <textarea id="code" name="code" style="display:none;">{{ code }}</textarea>
+            <div id="editor">{{ code }}</div>
+        </div>
+        <button type="submit">▶ Run Code</button>
+    </form>
+
+    {% if output %}
+    <h3>🧾 Output:</h3>
+    <pre>{{ output }}</pre>
+    {% endif %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/mode/python/python.min.js"></script>
+    <script>
+        var editor = CodeMirror(document.getElementById("editor"), {
+            value: document.getElementById("code").value,
+            mode: "python",
+            theme: "dracula",
+            lineNumbers: true,
+            indentUnit: 4,
+            tabSize: 4,
+        });
+
+        function syncCode() {
+            document.getElementById("code").value = editor.getValue();
+        }
+    </script>
+
+</body>
+
+</html>
